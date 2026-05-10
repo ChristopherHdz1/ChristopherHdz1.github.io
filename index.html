@@ -1,19 +1,194 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Your Name - Cybersecurity</title>
+  <meta charset="UTF-8">
+  <title>Your Name | Cybersecurity</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0f0f1a;
+      color: #e5e7eb;
+    }
+
+    header {
+      text-align: center;
+      padding: 50px 20px;
+      background: #0a0a14;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+
+    .subtitle {
+      color: #a78bfa;
+      margin-top: 10px;
+    }
+
+    nav {
+      margin-top: 20px;
+    }
+
+    nav a {
+      color: #c4b5fd;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #a78bfa;
+    }
+
+    section {
+      max-width: 900px;
+      margin: auto;
+      padding: 50px 20px;
+    }
+
+    h2 {
+      border-bottom: 2px solid #2a2a40;
+      padding-bottom: 10px;
+      color: #c4b5fd;
+    }
+
+    .about-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .about-container img {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #a78bfa;
+    }
+
+    .card {
+      background: #111122;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      border: 1px solid #2a2a40;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #e9d5ff;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 14px;
+      background: #a78bfa;
+      color: black;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background: #c4b5fd;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #6b7280;
+    }
+  </style>
 </head>
+
 <body>
+
+<header>
   <h1>Your Name</h1>
-  <p>Cybersecurity Graduate</p>
+  <p class="subtitle">Cybersecurity Graduate | Security Analyst in Progress</p>
 
+  <nav>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section id="about">
+  <h2>About Me</h2>
+
+  <div class="about-container">
+    <!-- ADD YOUR IMAGE HERE -->
+    <img src="your-photo.jpg" alt="Your Photo">
+
+    <div>
+      <p>
+        I'm a cybersecurity graduate with a strong interest in network security, threat detection,
+        and system protection. I enjoy analyzing vulnerabilities and building tools that improve
+        security awareness and defense.
+      </p>
+
+      <p>
+        Currently seeking opportunities where I can apply my skills, grow as a security professional,
+        and contribute to real-world security challenges.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
   <h2>Projects</h2>
-  <ul>
-    <li>Password Strength Checker (Python)</li>
-    <li>Network Traffic Analysis (Wireshark)</li>
-  </ul>
 
+  <div class="card">
+    <h3>Password Strength Analyzer</h3>
+    <p>
+      Developed a Python-based tool that evaluates password strength using entropy calculations
+      and detects common weak patterns vulnerable to brute-force attacks.
+    </p>
+    <p><strong>Tools:</strong> Python</p>
+    <a class="btn" href="#">View Project</a>
+  </div>
+
+  <div class="card">
+    <h3>Network Traffic Analysis</h3>
+    <p>
+      Captured and analyzed network packets using Wireshark to identify suspicious activity,
+      protocol anomalies, and potential intrusion attempts.
+    </p>
+    <p><strong>Tools:</strong> Wireshark</p>
+    <a class="btn" href="#">View Project</a>
+  </div>
+
+  <div class="card">
+    <h3>Basic Port Scanner</h3>
+    <p>
+      Built a custom Python port scanner to identify open ports on target systems and understand
+      potential exposure points in network security.
+    </p>
+    <p><strong>Tools:</strong> Python, Sockets</p>
+    <a class="btn" href="#">View Project</a>
+  </div>
+
+</section>
+
+<section id="contact">
   <h2>Contact</h2>
   <p>Email: your@email.com</p>
+  <p>
+    <a href="#">GitHub</a> |
+    <a href="#">LinkedIn</a>
+  </p>
+</section>
+
+<footer>
+  <p>© 2026 Your Name</p>
+</footer>
+
 </body>
 </html>
