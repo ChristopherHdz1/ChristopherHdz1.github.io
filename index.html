@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Christopher Hernandez | Cybersecurity</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080910;
+      --surface: #0e1018;
+      --surface2: #131620;
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(99,102,241,0.4);
+      --indigo: #6366f1;
+      --indigo-light: #818cf8;
+      --indigo-dim: rgba(99,102,241,0.12);
+      --text: #e2e8f0;
+      --text-muted: #64748b;
+      --text-mid: #94a3b8;
+      --green: #10b981;
+      --green-dim: rgba(16,185,129,0.1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── ANIMATED BACKGROUND ── */
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bg-canvas svg {
+      width: 100%; height: 100%;
+    }
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      animation: drift 14s ease-in-out infinite alternate;
+    }
+    .bg-orb:nth-child(1) { width: 500px; height: 500px; background: #6366f1; top: -100px; left: -80px; animation-duration: 16s; }
+    .bg-orb:nth-child(2) { width: 360px; height: 360px; background: #0ea5e9; bottom: 20%; right: -60px; animation-duration: 20s; animation-delay: -5s; }
+    .bg-orb:nth-child(3) { width: 280px; height: 280px; background: #8b5cf6; top: 50%; left: 40%; animation-duration: 18s; animation-delay: -9s; }
+
+    /* grid overlay */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(40px, 30px) scale(1.08); }
+    }
+
+    /* ── LAYOUT ── */
+    .wrapper { position: relative; z-index: 1; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 48px;
+      background: rgba(8,9,16,0.75);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px; color: var(--indigo-light);
+      letter-spacing: 0.08em;
+    }
+    .nav-brand span { color: var(--text-muted); }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      color: var(--text-muted); font-size: 13px; text-decoration: none;
+      letter-spacing: 0.04em; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 920px; margin: 0 auto;
+      padding: 80px 48px 64px;
+    }
+    .hero-inner {
+      display: flex; align-items: center; gap: 36px; margin-bottom: 32px;
+    }
+    .hero-photo {
+      width: 108px; height: 108px; border-radius: 50%;
+      object-fit: cover; flex-shrink: 0;
+      border: 2px solid var(--indigo);
+      box-shadow: 0 0 0 6px rgba(99,102,241,0.12);
+    }
+    .hero-photo-placeholder {
+      width: 108px; height: 108px; border-radius: 50%; flex-shrink: 0;
+      background: var(--surface2); border: 2px solid var(--indigo);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Mono', monospace; font-size: 24px; color: var(--indigo-light);
+      box-shadow: 0 0 0 6px rgba(99,102,241,0.12);
+    }
+    .hero-text-block { flex: 1; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--green); background: var(--green-dim);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 20px; padding: 4px 12px;
+      margin-bottom: 16px; letter-spacing: 0.06em;
+    }
+    .hero-tag::before { content: '●'; font-size: 8px; }
+    h1 {
+      font-size: 46px; font-weight: 700; line-height: 1.05;
+      color: #f8fafc; margin-bottom: 10px;
+    }
+    h1 em { font-style: normal; color: var(--indigo-light); }
+    .hero-role {
+      font-family: 'DM Mono', monospace; font-size: 13px;
+      color: var(--text-muted); margin-bottom: 0;
+    }
+    .hero-sub {
+      font-size: 16px; color: var(--text-mid); line-height: 1.7;
+      max-width: 640px; margin-bottom: 24px;
+    }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .badge {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      padding: 5px 12px; border-radius: 6px; border: 1px solid;
+    }
+    .badge-cert { color: var(--green); background: var(--green-dim); border-color: rgba(16,185,129,0.25); }
+    .badge-school { color: var(--indigo-light); background: var(--indigo-dim); border-color: rgba(99,102,241,0.3); }
+    .badge-gpa { color: var(--text-muted); background: transparent; border-color: var(--border); }
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+    .cta-primary {
+      background: var(--indigo); color: #fff;
+      padding: 10px 22px; border-radius: 8px;
+      text-decoration: none; font-size: 14px; font-weight: 500;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .cta-primary:hover { background: var(--indigo-light); transform: translateY(-1px); }
+    .cta-ghost {
+      background: transparent; color: var(--text-mid);
+      padding: 10px 22px; border-radius: 8px;
+      text-decoration: none; font-size: 14px;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .cta-ghost:hover { border-color: var(--border-hover); color: var(--text); }
+
+    /* ── STATS ── */
+    .stats {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .stat {
+      padding: 24px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-size: 28px; font-weight: 700; color: var(--indigo-light);
+      font-family: 'DM Mono', monospace;
+    }
+    .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    /* ── SECTIONS ── */
+    .section {
+      max-width: 920px; margin: 0 auto;
+      padding: 64px 48px;
+    }
+    .section-eyebrow {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--indigo); letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 28px; font-weight: 700; color: #f8fafc;
+      margin-bottom: 36px;
+    }
+    .divider { border: none; border-top: 1px solid var(--border); }
+
+    /* ── EXPERIENCE ── */
+    .exp-item {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: 40px;
+      border-left: 2px solid var(--surface2);
+    }
+    .exp-item::before {
+      content: ''; position: absolute;
+      left: -5px; top: 7px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--indigo);
+      border: 2px solid var(--bg);
+    }
+    .exp-role { font-size: 17px; font-weight: 700; color: #f1f5f9; }
+    .exp-org { font-size: 13px; color: var(--indigo-light); margin: 3px 0 2px; }
+    .exp-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; color: var(--text-muted); margin-bottom: 14px;
+    }
+    .exp-bullets { list-style: none; }
+    .exp-bullets li {
+      font-size: 14px; color: var(--text-mid);
+      line-height: 1.7; margin-bottom: 6px;
+      padding-left: 16px; position: relative;
+    }
+    .exp-bullets li::before {
+      content: '→'; position: absolute; left: 0;
+      color: var(--indigo); font-size: 12px; top: 3px;
+    }
+    .exp-bullets strong { color: #c7d2fe; font-weight: 500; }
+
+    /* ── LEADERSHIP ── */
+    .leadership-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .leadership-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+    .leadership-card:hover { border-color: var(--border-hover); }
+    .leadership-icon {
+      font-size: 22px; margin-bottom: 12px;
+    }
+    .leadership-title { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 4px; }
+    .leadership-org { font-size: 12px; color: var(--indigo-light); margin-bottom: 8px; }
+    .leadership-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    .awards-list { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+    .award-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 18px;
+    }
+    .award-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--indigo-light); flex-shrink: 0; margin-top: 5px;
+    }
+    .award-name { font-size: 14px; color: var(--text); font-weight: 500; }
+    .award-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
+      text-decoration: none;
+      display: flex; flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .project-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+    .project-card-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; margin-bottom: 14px;
+    }
+    .project-emoji { font-size: 26px; }
+    .project-link-icon {
+      font-size: 16px; color: var(--text-muted);
+      font-family: 'DM Mono', monospace;
+      transition: color 0.2s;
+    }
+    .project-card:hover .project-link-icon { color: var(--indigo-light); }
+    .project-title { font-size: 15px; font-weight: 700; color: #f1f5f9; margin-bottom: 8px; }
+    .project-desc { font-size: 13px; color: var(--text-muted); line-height: 1.65; flex: 1; margin-bottom: 16px; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .project-tag {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--indigo-light); background: var(--indigo-dim);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 4px; padding: 3px 8px;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .skill-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px;
+    }
+    .skill-group-label {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--indigo); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 12px;
+    }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .skill-pill {
+      font-size: 12px; color: var(--text-mid);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 4px; padding: 4px 10px;
+    }
+
+    /* ── GALLERY ── */
+    .gallery-intro {
+      font-size: 15px; color: var(--text-muted);
+      line-height: 1.7; margin-bottom: 28px; max-width: 600px;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .gallery-item {
+      position: relative; border-radius: 10px; overflow: hidden;
+      aspect-ratio: 4/3;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      transition: border-color 0.2s;
+    }
+    .gallery-item:first-child {
+      grid-column: span 2;
+      aspect-ratio: 16/9;
+    }
+    .gallery-item:hover { border-color: var(--border-hover); }
+    .gallery-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; transition: transform 0.4s;
+    }
+    .gallery-item:hover img { transform: scale(1.04); }
+    .gallery-item-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,9,16,0.85) 0%, transparent 50%);
+      display: flex; align-items: flex-end;
+      padding: 14px; opacity: 0; transition: opacity 0.2s;
+    }
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+    .gallery-caption { font-size: 13px; color: #e2e8f0; }
+
+    /* placeholder tiles for gallery */
+    .gallery-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+    }
+    .gallery-placeholder span { font-size: 28px; }
+    .gallery-placeholder p {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--text-muted); text-align: center; padding: 0 12px;
+    }
+
+    /* ── CONTACT ── */
+    .contact-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .contact-link {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 20px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; text-decoration: none;
+      color: var(--text-mid); font-size: 13px;
+      transition: all 0.2s;
+    }
+    .contact-link:hover { border-color: var(--border-hover); color: var(--indigo-light); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 24px;
+      border-top: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; color: var(--text-muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0; transform: translateY(18px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in:nth-child(1) { animation-delay: 0.05s; }
+    .fade-in:nth-child(2) { animation-delay: 0.15s; }
+    .fade-in:nth-child(3) { animation-delay: 0.25s; }
+    .fade-in:nth-child(4) { animation-delay: 0.35s; }
+    .fade-in:nth-child(5) { animation-delay: 0.45s; }
+  </style>
+</head>
+<body>
+
+<!-- Animated background -->
+<div class="bg-canvas">
+  <div class="bg-orb"></div>
+  <div class="bg-orb"></div>
+  <div class="bg-orb"></div>
+</div>
+<div class="bg-grid"></div>
+
+<div class="wrapper">
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-brand">CH<span>_</span>portfolio</span>
+    <div class="nav-links">
+      <a href="#experience">Experience</a>
+      <a href="#leadership">Leadership</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner fade-in">
+      <!-- Replace src with your actual photo file -->
+      <div class="hero-photo-placeholder">CH</div>
+      <!-- Once you upload profile.jpg, replace the div above with:
+           <img class="hero-photo" src="profile.jpg" alt="Christopher Hernandez"> -->
+      <div class="hero-text-block">
+        <div class="hero-tag">Open to opportunities</div>
+        <h1>Christopher <em>Hernandez</em></h1>
+        <p class="hero-role">B.S. Cybersecurity · UTRGV · May 2026</p>
+      </div>
+    </div>
+
+    <p class="hero-sub fade-in">
+      Cybersecurity graduate with 1+ year of hands-on SOC experience — triaging 50–70+ alerts per week, hunting threats, and hardening infrastructure in real production environments.
+    </p>
+
+    <div class="hero-badges fade-in">
+      <span class="badge badge-cert">✓ CompTIA Security+</span>
+      <span class="badge badge-cert">✓ CompTIA Network+</span>
+      <span class="badge badge-school">UTRGV · GPA 3.36</span>
+    </div>
+
+    <div class="hero-ctas fade-in">
+      <a class="cta-primary" href="https://linkedin.com/in/chrishdz16" target="_blank">LinkedIn ↗</a>
+      <a class="cta-ghost" href="https://github.com/ChristopherHdz1" target="_blank">GitHub</a>
+      <a class="cta-ghost" href="mailto:christopher.hernandez7282@gmail.com">Email me</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat fade-in">
+      <div class="stat-num">50–70+</div>
+      <div class="stat-label">alerts triaged / week</div>
+    </div>
+    <div class="stat fade-in">
+      <div class="stat-num">~25%</div>
+      <div class="stat-label">false positive reduction</div>
+    </div>
+    <div class="stat fade-in">
+      <div class="stat-num">30+</div>
+      <div class="stat-label">critical CVEs remediated</div>
+    </div>
+    <div class="stat fade-in">
+      <div class="stat-num">~30%</div>
+      <div class="stat-label">faster threat detection</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience">
+    <div class="section-eyebrow">Career</div>
+    <div class="section-title">Work experience</div>
+
+    <div class="exp-item">
+      <div class="exp-role">SOC Student Analyst</div>
+      <div class="exp-org">UTRGV Regional Security Operations Center (RSOC)</div>
+      <div class="exp-date">Feb 2025 – Feb 2026 · Edinburg, TX</div>
+      <ul class="exp-bullets">
+        <li>Triaged <strong>50–70+ alerts/week</strong> in Splunk SIEM, cutting false positives ~25% through improved correlation and threat classification</li>
+        <li>Identified and supported remediation of <strong>30+ critical/high CVEs</strong> via Nessus and OpenVAS across university infrastructure</li>
+        <li>Applied NIST CSF to prioritize and escalate incidents, improving mean time to respond (MTTR)</li>
+        <li>Documented incidents, metrics, and remediation actions for compliance and continuous improvement reporting</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-role">Information Security Student Assistant</div>
+      <div class="exp-org">UTRGV Information Security</div>
+      <div class="exp-date">Sept 2024 – Feb 2025 · Edinburg, TX</div>
+      <ul class="exp-bullets">
+        <li>Monitored network traffic with Wireshark and Zeek, identifying IOCs and anomalous behavior across internal systems</li>
+        <li>Analyzed <strong>100+ daily SIEM alerts</strong>, improving detection speed ~30% through triage, log analysis, and escalation workflows</li>
+        <li>Supported incident response operations contributing to a <strong>~20% reduction</strong> in average response time</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-role">Resident Assistant</div>
+      <div class="exp-org">UTRGV University Housing</div>
+      <div class="exp-date">Aug 2023 – May 2025 · Edinburg, TX</div>
+      <ul class="exp-bullets">
+        <li>Managed <strong>20+ student incidents per semester</strong>, coordinating with emergency personnel as primary point of contact</li>
+        <li>Mediated conflicts for a community of <strong>50+ residents</strong>, applying de-escalation techniques to reduce repeated incidents</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- LEADERSHIP -->
+  <section class="section" id="leadership">
+    <div class="section-eyebrow">Beyond the keyboard</div>
+    <div class="section-title">Leadership & recognition</div>
+
+    <div class="leadership-grid">
+      <div class="leadership-card">
+        <div class="leadership-icon">🏛️</div>
+        <div class="leadership-title">VP of New Member Education</div>
+        <div class="leadership-org">Phi Kappa Theta Fraternity</div>
+        <div class="leadership-desc">Led intellectual development programs and new member education initiatives, overseeing structured onboarding and accountability systems for incoming members.</div>
+      </div>
+      <div class="leadership-card">
+        <div class="leadership-icon">🌐</div>
+        <div class="leadership-title">President</div>
+        <div class="leadership-org">Model United Nations at UTRGV</div>
+        <div class="leadership-desc">Led the MUN organization, coordinating delegations, managing logistics for conferences, and developing members' research, debate, and diplomatic communication skills.</div>
+      </div>
+      <div class="leadership-card">
+        <div class="leadership-icon">🏠</div>
+        <div class="leadership-title">Resident Assistant</div>
+        <div class="leadership-org">UTRGV Housing</div>
+        <div class="leadership-desc">Served as primary contact for a 50+ resident community, handling incident response, enforcing safety protocols, and fostering a structured, accountable living environment.</div>
+      </div>
+    </div>
+
+    <div class="awards-list">
+      <div class="award-item">
+        <div class="award-dot"></div>
+        <div>
+          <div class="award-name">Benjamin A. Gilman Study Abroad Federal Scholarship</div>
+          <div class="award-sub">Nationally competitive U.S. federal award for study abroad</div>
+        </div>
+      </div>
+      <div class="award-item">
+        <div class="award-dot"></div>
+        <div>
+          <div class="award-name">Catholic War Veterans Scholarship</div>
+          <div class="award-sub">Merit and service-based recognition</div>
+        </div>
+      </div>
+      <div class="award-item">
+        <div class="award-dot"></div>
+        <div>
+          <div class="award-name">Phi Kappa Theta Alamo Alumni Association Academic Scholarship</div>
+          <div class="award-sub">Academic excellence within the fraternity</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- PROJECTS -->
+  <section class="section" id="projects">
+    <div class="section-eyebrow">Projects</div>
+    <div class="section-title">What I've built</div>
+    <div class="projects-grid">
+
+      <!-- Replace href="#" with your actual GitHub repo links -->
+      <a class="project-card" href="https://github.com/ChristopherHdz1" target="_blank">
+        <div class="project-card-header">
+          <span class="project-emoji">🛡️</span>
+          <span class="project-link-icon">↗</span>
+        </div>
+        <div class="project-title">Cybersecurity Home Lab</div>
+        <div class="project-desc">Virtualized network simulating real-world attacks — lateral movement, privilege escalation, brute-force, port scans. Deployed and tuned Snort/Suricata detecting 20+ attack patterns including reconnaissance and credential attacks.</div>
+        <div class="project-tags">
+          <span class="project-tag">Security Onion</span>
+          <span class="project-tag">Snort</span>
+          <span class="project-tag">Suricata</span>
+          <span class="project-tag">Kali Linux</span>
+          <span class="project-tag">Bash</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://github.com/ChristopherHdz1" target="_blank">
+        <div class="project-card-header">
+          <span class="project-emoji">☁️</span>
+          <span class="project-link-icon">↗</span>
+        </div>
+        <div class="project-title">GCP Network Security Lab</div>
+        <div class="project-desc">Multi-VPC architecture on Google Cloud with 99.9% connectivity uptime. Hardened using IAM RBAC, VPC firewall rules, and private IP configs. Integrated Filestore NFS for shared storage across isolated VMs.</div>
+        <div class="project-tags">
+          <span class="project-tag">Google Cloud</span>
+          <span class="project-tag">IAM</span>
+          <span class="project-tag">VPC</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Filestore</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://github.com/ChristopherHdz1" target="_blank">
+        <div class="project-card-header">
+          <span class="project-emoji">🔎</span>
+          <span class="project-link-icon">↗</span>
+        </div>
+        <div class="project-title">SOC Threat Simulation & Analysis</div>
+        <div class="project-desc">Analyzed multi-stage simulated attacks via SIEM log correlation, mapping adversary TTPs to MITRE ATT&CK and identifying IOCs across the full kill chain. Completed TryHackMe SOC Level 1 path.</div>
+        <div class="project-tags">
+          <span class="project-tag">Splunk</span>
+          <span class="project-tag">MITRE ATT&CK</span>
+          <span class="project-tag">Kill Chain</span>
+          <span class="project-tag">TryHackMe</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SKILLS -->
+  <section class="section" id="skills">
+    <div class="section-eyebrow">Technical</div>
+    <div class="section-title">Skills & tools</div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-label">Security tools</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Splunk</span>
+          <span class="skill-pill">Nessus</span>
+          <span class="skill-pill">OpenVAS</span>
+          <span class="skill-pill">Snort</span>
+          <span class="skill-pill">Suricata</span>
+          <span class="skill-pill">Wireshark</span>
+          <span class="skill-pill">Burp Suite</span>
+          <span class="skill-pill">Ghidra</span>
+          <span class="skill-pill">Zeek</span>
+          <span class="skill-pill">Nmap</span>
+          <span class="skill-pill">VirusTotal</span>
+          <span class="skill-pill">MS Defender</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Frameworks</div>
+        <div class="skill-pills">
+          <span class="skill-pill">NIST CSF</span>
+          <span class="skill-pill">MITRE ATT&CK</span>
+          <span class="skill-pill">Cyber Kill Chain</span>
+          <span class="skill-pill">IR Lifecycle</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Platforms & OS</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Kali Linux</span>
+          <span class="skill-pill">Ubuntu</span>
+          <span class="skill-pill">Windows Server</span>
+          <span class="skill-pill">GCP</span>
+          <span class="skill-pill">VirtualBox</span>
+          <span class="skill-pill">TryHackMe</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Programming</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">Bash</span>
+          <span class="skill-pill">PowerShell</span>
+          <span class="skill-pill">C++</span>
+          <span class="skill-pill">HTML</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- GALLERY -->
+  <section class="section" id="gallery">
+    <div class="section-eyebrow">University life</div>
+    <div class="section-title">Moments & milestones</div>
+    <p class="gallery-intro">
+      A few snapshots from my time at UTRGV — from SOC work and fraternity events to MUN conferences and campus life.
+    </p>
+
+    <div class="gallery-grid">
+
+      <!-- SLOT 1 — wide, replace src with your photo -->
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span>📸</span>
+          <p>Add your photo here<br>Replace with &lt;img src="photo1.jpg"&gt;</p>
+        </div>
+        <div class="gallery-item-overlay">
+          <span class="gallery-caption">SOC / RSOC work</span>
+        </div>
+      </div>
+
+      <!-- SLOT 2 -->
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span>🌐</span>
+          <p>MUN conference</p>
+        </div>
+        <div class="gallery-item-overlay">
+          <span class="gallery-caption">Model UN — UTRGV</span>
+        </div>
+      </div>
+
+      <!-- SLOT 3 -->
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span>🏛️</span>
+          <p>Phi Kappa Theta</p>
+        </div>
+        <div class="gallery-item-overlay">
+          <span class="gallery-caption">Fraternity leadership</span>
+        </div>
+      </div>
+
+      <!-- SLOT 4 -->
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span>✈️</span>
+          <p>Gilman scholarship<br>study abroad</p>
+        </div>
+        <div class="gallery-item-overlay">
+          <span class="gallery-caption">Gilman Study Abroad</span>
+        </div>
+      </div>
+
+      <!-- SLOT 5 -->
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span>🎓</span>
+          <p>Campus & graduation</p>
+        </div>
+        <div class="gallery-item-overlay">
+          <span class="gallery-caption">UTRGV — Class of 2026</span>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; margin-top: 14px;">
+      <!-- Instructions for you: replace the placeholder divs above with &lt;img&gt; tags pointing to your photos -->
+      Upload your photos to the repo root and replace each placeholder div with: &lt;img src="yourphoto.jpg" alt="caption"&gt;
+    </p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="section-eyebrow">Get in touch</div>
+    <div class="section-title">Contact</div>
+    <div class="contact-row">
+      <a class="contact-link" href="mailto:christopher.hernandez7282@gmail.com">✉ christopher.hernandez7282@gmail.com</a>
+      <a class="contact-link" href="https://linkedin.com/in/chrishdz16" target="_blank">in LinkedIn</a>
+      <a class="contact-link" href="https://github.com/ChristopherHdz1" target="_blank">{ } GitHub</a>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Christopher Hernandez · B.S. Cybersecurity, UTRGV
+  </footer>
+
+</div>
+</body>
+</html>
